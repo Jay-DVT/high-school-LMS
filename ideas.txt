@@ -1,0 +1,30 @@
+Matematicas
+    dividir decimales, fracciones
+    Orden de las operaciones 
+    Exponentes
+    Minimo comun multiplo/divisor
+    Ecuaciones algebraicas
+    decimales a fracciones
+    Porcentajes
+    Tablas
+    Graficas
+    Histograma
+    Media, Mediana, Quartil
+    Desviacion media
+    Razon
+    Area cubica
+    Cara, arista, vertice
+        Forma en papel
+    Sucesiones con progresion
+    Area, perimetro de formas
+
+Historia // Geopandas
+    La prehistoria. De los primeros seres humanos a las primeras sociedades urbanas
+    Las civilizaciones agrícolas de Oriente y las civilizaciones del Mediterráneo
+    Las civilizaciones mesoamericanas y andinas
+
+Ciencias Naturales
+    Quimica
+        Propiedades de la materia
+        Las 3R's
+    Componentes del universo, sistema solar 
