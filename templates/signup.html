@@ -15,7 +15,15 @@
       name="idValue"
       id="idValue"
     />
-    <label for="firstName">Student's last name</label>
+    <label for="firstName">First name</label>
+    <input
+      type="text"
+      autocomplete="off"
+      placeholder="First Name"
+      name="firstName"
+      id="firstName"
+    />
+    <label for="lastName">Last name</label>
     <input
       type="text"
       autocomplete="off"
@@ -39,7 +47,10 @@
       name="passwordConfirm"
       id="passwordConfirm"
     />
-    <input type="submit" value="Sign up"/>
+    <div class="button-container">
+      <input type="submit" value="Sign up"/>
+      <input type="reset">
+    </div>
   </div>
 </form>
-Already have an account. <a id="login" href="{{url_for('auth.login')}}">Log in</a>. {% endblock %}
+Already have an account. <a id="login" href="{{url_for('login')}}">Log in</a>. {% endblock %}

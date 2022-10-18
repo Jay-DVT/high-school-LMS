@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<form action="/signup" method="post">
+<form action="/login" method="post">
     <h3>Log in</h3>
     <div class="form">
         <label for="idValue">Id</label>
@@ -23,9 +23,9 @@
           name="password"
           id="password"
         />
-        <input type="submit" value="Log in"/>
+        <button type="submit">Submit</button>
     </div>
   </form>
-    Don't have an account. <a id="signup" href="{{url_for('auth.signup')}}">Sign up</a>.
+    Don't have an account. <a id="signup" href="{{url_for('signup')}}">Sign up</a>.
 
 {% endblock %}
