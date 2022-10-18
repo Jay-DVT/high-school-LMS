@@ -1,10 +1,31 @@
 {% extends "layout.html" %}
 
+{% block title %}Login{% endblock %}
+
 {% block body %}
 
-    <form action="/login" method="post">
-        <input type="text" autocomplete="off" autofocus placeholder="Name" name="name" id="nameInput">
-        <input type="submit" value="Log in">
-    </form>
+<form action="/signup" method="post">
+    <h3>Log in</h3>
+    <div class="form">
+        <label for="idValue">Id</label>
+        <input
+          type="text"
+          autocomplete="off"
+          placeholder="Id"
+          name="idValue"
+          id="idValue"
+        />
+        <label for="password">Password</label>
+        <input
+          type="password"
+          autocomplete="off"
+          placeholder="Password"
+          name="password"
+          id="password"
+        />
+        <input type="submit" value="Log in"/>
+    </div>
+  </form>
+    Don't have an account. <a id="signup" href="{{url_for('auth.signup')}}">Sign up</a>.
 
 {% endblock %}

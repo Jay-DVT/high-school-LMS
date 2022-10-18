@@ -1,0 +1,45 @@
+{% extends "layout.html" %} 
+
+{% block title %}Sign Up{% endblock %}
+
+{% block body %}
+
+<form action="/signup" method="post">
+  <h3>Sign Up</h3>
+  <div class="form">
+    <label for="idValue">Id</label>
+    <input
+      type="text"
+      autocomplete="off"
+      placeholder="Id"
+      name="idValue"
+      id="idValue"
+    />
+    <label for="firstName">Student's last name</label>
+    <input
+      type="text"
+      autocomplete="off"
+      placeholder="Last Name"
+      name="lastName"
+      id="lastName"
+    />
+    <label for="password">Password</label>
+    <input
+      type="password"
+      autocomplete="off"
+      placeholder="Password"
+      name="password"
+      id="password"
+    />
+    <label for="passwordConfirm">Confirm password</label>
+    <input
+      type="password"
+      autocomplete="off"
+      placeholder="Password"
+      name="passwordConfirm"
+      id="passwordConfirm"
+    />
+    <input type="submit" value="Sign up"/>
+  </div>
+</form>
+Already have an account. <a id="login" href="{{url_for('auth.login')}}">Log in</a>. {% endblock %}

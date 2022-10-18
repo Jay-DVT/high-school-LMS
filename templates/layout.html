@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Highschool trainer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+    <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
+    <script 
+        type="text/javascript"
+        src="{{url_for('static', filename='app.js')}}"></script>
     {% block body %}{% endblock %}
 </body>
 </html>

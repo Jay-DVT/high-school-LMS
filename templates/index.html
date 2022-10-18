@@ -1,11 +1,13 @@
 {% extends "layout.html" %}
 
+{% block title %}Index{% endblock %}
+
 {% block body %}
 
     {% if session["name"] %}
-        You are logged in as {{ session["name"] }}. <a href="/logout">Log out</a>.
+        You are logged in as {{ session["name"] }}. <a id="logout" href="/logout">Log out</a>.
     {% else %}
-        You are not logged in. <a href="/login">Log in</a>.
+        You are not logged in. <a id="signup" href="/login">Log in</a>.
     {% endif %}
 
 {% endblock %}
