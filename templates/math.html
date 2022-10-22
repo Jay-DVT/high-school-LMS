@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}Math{% endblock %}
+
+{% block body %}
+    <div class="topic">
+        Notacion cientifica <br />
+        <a href="{{url_for('scientific_notation_theory')}}">Teoria</a>
+        <a href="{{url_for('scientific_notation_practice')}}">Ejercicios</a>
+    </div>
+    <div class="topic">
+        Ecuaciones lineal
+        <a href="{{url_for('lineal_equation_theory')}}">Teoria</a>
+        <a href="{{url_for('lineal_equation_practice')}}">Ejercicios</a>
+    </div>
+
+{% endblock %}

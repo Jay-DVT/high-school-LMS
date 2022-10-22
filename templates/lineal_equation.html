@@ -1,0 +1,155 @@
+{% extends "layout.html" %}
+
+{% block title %}Math{% endblock %}
+
+{% block body %}
+
+    {% if node=="theory" %}
+    source: McGrawHill
+    
+    <h2>Igualdad</h2>
+    <p>Expresion indicada por "=" que designa dos valores como <span>"igual a"</span></p>
+    <p>La <span>ecuacion</span> es una igualdad en la que hay cantidades desconocidas, las cuales son designadas como <span>incognitas</span>, cuyo valor se verifica para determinados valores de ellas</p>
+    Ejemplo:
+    \begin{equation} \label{eq1}
+    \begin{split}
+    3x - 4 & = 8 \\
+    3x & = 8 + 4 \\
+    x & = \frac{12}{3} \\
+    x & = 4
+    \end{split}
+    \end{equation}
+    Comprobacion:
+    \begin{equation} \label{eq2}
+    \begin{split}
+        3(4) - 4 & = 8 \\
+        12 -4 & = 8  \\
+        8 & = 8  \\
+    \end{split}
+    \end{equation}
+
+    <h2>Despeje de una de las literales</h2>
+    <p><span>Formula</span> es la expresion de una ley o principio, por medio de simbolos y letra. Senala relaicones entre las variables. <span>Una formula es una ecuacion</span></p>
+    <p>El <span>sujeto</span> de una formula es la literal cuyo valor se obtiene por medio de la formulas</p>
+    <p>Para despejar una de las literales se utilizan <span>las propiedades de los numeros reales y de la igualdad</span></p>
+    Ejemplo:
+    Dada la formula del area de un triangulo 
+    \begin{equation} \label{triangleArea}
+    A = \frac{b \cdot h}{2}, \text{hace de } h \text{ el sujeto de la formula}
+    \end{equation}
+    Despejamos \(h\) de esta ecuacion; generando una nueva incognita
+    \begin{equation} \label{triangleArea2}
+    \begin{split}
+        2A & = b \cdot h \\
+        h & = \frac{2A}{b}
+    \end{split}
+    \end{equation}
+
+    <h2>Ecuacion</h2>
+    <p>La ecuacion cuenta con <span>2 miembros</span>, 2 incognitas.</p>
+    <p>El <span>grado</span> de una ecuacion lo determina el exponente de mayor grado de la incognita</p>
+    Ejemplo:
+    \begin{equation} \label{eq3}
+    \begin{split}
+        3x + 4 & = 8 \text{, es de primer grado. Solo cuenta con ua solucion} \\
+        y^2 + 2y + 1 & = 0 \text{, es de segundo grado. Tiene 2 soluciones} \\
+        x^5 - x^4 + 3x^3 - 6x^2 + x - 1 & = 0 \text{, es de quinto grado. Tiene 5 soluciones} \\
+    \end{split}
+    \end{equation}
+
+    <h2>Resoluciond de ecuaciones de primer grado con una incognita</h2>
+    <p>A) <span>Efectuar</span> las operaciones indicadas</p>
+    <p>B) <span>Reunir</span> en un miembro todos los terminos que contengan la incognita, y en el otro miembro todas las conocidas</p>
+    <p>C) <span>Reducir</span> los terminos semejantes</p>
+    <p>D) <span>Despejar</span> la incognita</p>
+    <p>E) <span>Comprobar</span> sustituyendo los dos miembros de la ecuacion.</p>
+    Ejemplo:
+    Resolver las siguientes ecuaciones lineales:
+    \begin{equation} \label{eq4}
+    \begin{split}
+        6x + 2x - x - 5 & = 30 \\
+        7x - 5 & = 30 \\
+        7x & = 30 + 5 \\
+        7x & = 35 \\
+        x & = \frac{35}{7} \\
+        x & = 5
+    \end{split}
+    \end{equation}
+    Comprobacion:
+    \begin{equation} \label{eq5}
+    \begin{split}
+        6(5) + 2(5) - 5 - 5 & = 30 \\
+        30 + 10 - 10 & = 30 \\
+        30 & = 30 \\
+    \end{split}
+    \end{equation}
+
+    <h2>Ecuaciones con signos de agrupacion</h2>
+    \begin{equation} \label{eq6}
+    \begin{split}
+        (5-3y) - (-4y+6) & = (8y+11) - (3y-6) \\ 
+        5 - 3y + 4y -6 & = 8y + 11 - 3y + 6 \\ 
+        -3y + 4y - 8y + 3y & = -5 + 11 + 6 + 6 \\
+        -11y + 7y & = 23 - 5 \\
+        -4y & = 18 \\
+        y & = -\frac{18}{4} \\
+        y & = -\frac{9}{2} \\
+    \end{split}
+    \end{equation}
+
+    <h2>Ecuacion con productos indicaos</h2>
+    \begin{equation} \label{eq7}
+    \begin{split}
+        2(y-7) - 4(5-3y) & = 2(4y-1) + 5(1+2y) \\
+        2y - 14 - 20 + 12y & = 8y - 2 + 5 + 10y \\
+        2y + 12y - 8y - 10y & = 14 + 20 + 5 - 2
+        -4y & = 37 \\
+        -y & = \frac{37}{4} \\
+        y & = -\frac{37}{4} \\
+    \end{split}
+    \end{equation}
+
+    <h2>Ecuaciones literales con otras letras</h2>
+    Ejemplo:
+    \begin{equation} \label{eq8}
+    \begin{split}
+        & 2 (y-a) - 6 = 4(ay - 4) \\
+        & 2y -2a - 6 = 4ay - 16 \\
+        & 2y - 4ay = 2a + 6 - 16 \\ 
+        & 2y(1-2a) = 2a - 10 \\
+        & 2y = \frac{2a - 10}{1-2a} \\
+        & y = \frac{2(a - 5)}{\frac{1-2a}{2}} \\
+        & y = \frac{\cancel{2}(a - 5)}{\cancel{2}(1-2a)} \\ 
+        & y = \frac{a - 5}{1-2a} \\
+    \end{split}
+    \end{equation}
+
+
+    <h2>Ecuaciones con radicales</h2>
+    Ejemplo:
+    \begin{equation} \label{eq9}
+    \begin{split}
+        \sqrt{4x^2-3}-2x &= 1 \\
+        \sqrt{4x^2-3} &= 2x + 1 \\
+        4x^2-3 &= (2x + 1)^2 \\
+        4x^2 - 3 &= 4x^2 + 4x + 1 \\
+        4x^2 - 4x^2 - 4x &= 1 + 3 \\
+        -4x &= 4 \\
+        x &= -1
+    \end{split}
+    \end{equeation}
+
+    {% elif node=="practice" %}
+    Resuelve las siguientes ecuaciones:
+    <form action="\math/lineal_equation/practice" method="post">
+
+        {% for i in range(len) %}
+        <div class="question">
+            <p>{{i+1}}) {{questions[i].question}}</p>
+            {{questions[i].unknown}} = <input type="text" name="answer{{i}}" id="answer{{i}}" placeholder="Respuesta">
+        </div>
+        {% endfor %}
+    </form>
+    {% endif %}
+
+{% endblock %}

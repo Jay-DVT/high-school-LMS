@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block title %}Scientific Notation{% endblock %}
+
+{% block body %}
+
+    {% if node=="theory" %}
+    <h2>Expresar con notacion cientifica</h2>
+    <p>Debido a magnitudes enormes o diminutas, las cantidades son expresandas en <span>notacion cientidican</span>, se cita un numero por una potencia de 10</p> 
+    Ejemplos:
+    
+    \begin{equation}
+    \begin{aligned}
+    3785000000 & = 3.785 \times 10^9 \\
+    474000 & = 4.74 \times 10^5 \\
+    0.000000534 & = 5.34 \times 10^{-7}
+    \end{aligned}
+    \end{equation}
+
+    <h2>Expresar con notacion ordinaria</h2>
+    <p>La conversion requiere <span>mover</span> el punto decimal a la derecha si el exponente es positico y a la izquierda si es negativo</p>
+    Ejemplo:
+    <div style="display: flex;justify-content: space-around;">
+        <div>
+            \begin{equation}
+            \begin{aligned}
+            4.85 \times 10^5 & = 485000 \\
+            5.20 \times 10^{-3} & = 0.0052
+            \end{aligned}
+            \end{equation}
+        </div>
+        <div>
+            \begin{equation}
+            \begin{aligned}
+            3.54 \times 10^0 & = 3.54 \\
+            1.03 \times 10^{-4} & = 0.000103
+            \end{aligned}
+            \end{equation}
+        </div>
+    </div>
+    <h2>Operaciones</h2>
+    Ejemplo:
+    \begin{equation}
+    \begin{aligned}
+    \frac{(225000000)(0.000150)}{2240000000000} & \\
+    \frac{(225000000)(0.000150)}{2240000000000} & = \frac{(2.25 \times 10^8)(1.5 \times 10^{-4})}{2.24 \times 10^{12}} = \\
+    & = \frac{(2.25)(1.5)(10^{8-4})}{2.24(10^{12})} = \\
+    & = \frac{3.375}{2.24}(10^4 \cdot 10^{-12}) = 1.506 \times 10^{-8} \\
+    \end{aligned}
+    \end{equation}
+
+    {% elif node=="practice" %}
+    
+    
+    {% endif %}
+
+{% endblock %}

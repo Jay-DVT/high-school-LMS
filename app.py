@@ -56,6 +56,7 @@ def load_user(id):
 def index():
     return render_template("index.html", user=current_user)
 
+#? ----------------- Authentication ----------------- 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -74,7 +75,6 @@ def login():
             print('idValue does not exist.')
 
     return render_template("login.html", user=current_user)
-
 
 @app.route('/logout')
 @login_required
@@ -111,6 +111,93 @@ def signup():
             return redirect(url_for('index'))
 
     return render_template("signup.html", user=current_user)
+
+#? ----------------------------------
+
+#* ----------------- Subjects -----------------
+@app.route('/math', methods=['GET', 'POST'])
+@login_required
+def math():
+    return render_template("math.html", user=current_user)
+
+@app.route('/physics', methods=['GET', 'POST'])
+@login_required
+def physics():
+    return render_template("physics.html", user=current_user)
+
+@app.route('/history', methods=['GET', 'POST'])
+@login_required
+def history():
+    return render_template("history.html", user=current_user)
+#* ----------------------------------
+
+# ----------------- Math -----------------
+# Algebra
+@app.route('/math/scientific_notation/theory', methods=['GET'])
+@login_required
+def scientific_notation_theory():
+    return render_template("scientific_notation.html", user=current_user, node="theory")
+@app.route('/math/scientific_notation/practice', methods=['GET', 'POST'])
+@login_required
+def scientific_notation_practice():
+    return render_template("scientific_notation.html", user=current_user, node="practice")
+
+#lineal equations
+@app.route('/math/lineal_equation/theory', methods=['GET'])
+def lineal_equation_theory():
+    return render_template("lineal_equation.html", user=current_user, node="theory")
+@app.route('/math/lineal_equation/practice', methods=['GET', 'POST'])
+def lineal_equation_practice():
+    class Questions:
+        def __init__(self, question, answer, unknown):
+                self.question = question
+                self.answer = answer
+                self.unknown = unknown
+
+    questions = []
+    for i in range(5):
+        question = "a"
+        answer = "b"
+        unknown = "\\(x\\)"
+        questions.append(Questions(question, answer, unknown))
+    return render_template("lineal_equation.html", user=current_user, node="practice", questions=questions, len=len(questions))
+# ----------------------------------
+
+# ----------------- Physics -----------------
+# Metric systems
+@app.route('/physics/metric_systems/theory', methods=['GET'])
+def metric_systems_theory():
+    return render_template("metric_systems.html", user=current_user, node="theory")
+@app.route('/physics/metric_systems/practice', methods=['GET', 'POST'])
+def metric_systems_practice():
+    return render_template("metric_systems.html", user=current_user, node="practice")
+
+# line movement
+@app.route('/physics/line_movement/theory', methods=['GET'])
+def line_movement_theory():
+    return render_template("line_movement.html", user=current_user, node="theory")
+@app.route('/physics/line_movement/practice', methods=['GET', 'POST'])
+def line_movement_practice():
+    return render_template("line_movement.html", user=current_user, node="practice")
+
+# Force
+@app.route('/physics/force/theory', methods=['GET'])
+def force_theory():
+    return render_template("force.html", user=current_user, node="theory")
+@app.route('/physics/force/practice', methods=['GET', 'POST'])
+def force_practice():
+    return render_template("force.html", user=current_user, node="practice")
+# ----------------------------------
+
+# ----------------- History -----------------
+# Nation state
+@app.route('/history/nation_state/theory', methods=['GET'])
+def nation_state_theory():
+    return render_template("nation_state.html", user=current_user, node="theory")
+@app.route('/history/nation_state/practice', methods=['GET', 'POST'])
+def nation_state_practice():
+    return render_template("nation_state.html", user=current_user, node="practice")
+# ----------------------------------
 
 if __name__ == '__main__':
     #debug mode, turn off in deployment

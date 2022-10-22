@@ -4,6 +4,15 @@
 
 {% block body %}
 
-        You are logged in as {{ user.firstName }} {{ user.lastName }}. <a id="logout" href="/logout">Log out</a>.
+        Bienvenido al sistema de mejoramiento academico, dentro de tu curso se encuentran las siguientes materias:
+        <div>
+           <a href="{{url_for('math')}}">Matematicas I</a>
+        </div>
+        <div>
+           <a href="{{url_for('physics')}}">Fisica I</a>
+        </div>
+        <div>
+           <a href="{{url_for('history')}}">Historia Mexico I</a>
+        </div>
 
 {% endblock %}

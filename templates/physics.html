@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}Physics{% endblock %}
+
+{% block body %}
+    <div class="topic">
+        Sistemas fisicos
+        <a href="{{url_for('metric_systems_theory')}}">Teoria</a>
+        <a href="{{url_for('metric_systems_practice')}}">Ejercicios</a>
+    </div>
+    <div class="topic">
+        Movimiento rectilineo uniforme
+        <a href="{{url_for('line_movement_theory')}}">Teoria</a>
+        <a href="{{url_for('line_movement_practice')}}">Ejercicios</a>
+    </div>
+    <div class="topic">
+        Fuerza y Energia
+        <a href="{{url_for('force_theory')}}">Teoria</a>
+        <a href="{{url_for('force_practice')}}">Ejercicios</a>
+    </div>
+
+{% endblock %}
