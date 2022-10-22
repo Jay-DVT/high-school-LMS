@@ -4,10 +4,6 @@
 
 {% block body %}
 
-    {% if session["name"] %}
-        You are logged in as {{ session["name"] }}. <a id="logout" href="/logout">Log out</a>.
-    {% else %}
-        You are not logged in. <a id="signup" href="/login">Log in</a>.
-    {% endif %}
+        You are logged in as {{ user.firstName }} {{ user.lastName }}. <a id="logout" href="/logout">Log out</a>.
 
 {% endblock %}

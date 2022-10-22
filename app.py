@@ -51,10 +51,10 @@ def load_user(id):
     return User.query.get(int(id))
 
 #*Routes
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
+@login_required
 def index():
-    #if there is no registered login session, redirect to login page
-    return redirect("/login")
+    return render_template("index.html", user=current_user)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -65,13 +65,13 @@ def login():
         user = User.query.filter_by(idValue=idValue).first()
         if user:
             if check_password_hash(user.password, password):
-                flash('Logged in successfully!', category='success')
+                print('Logged in successfully!')
                 login_user(user, remember=True)
-                return redirect(url_for('views.home'))
+                return redirect(url_for('index'))
             else:
                 flash('Incorrect password, try again.', category='error')
         else:
-            flash('idValue does not exist.', category='error')
+            print('idValue does not exist.')
 
     return render_template("login.html", user=current_user)
 
@@ -99,8 +99,8 @@ def signup():
             print('idValue already exists.')
         elif password != passwordConfirm:
             print('Passwords don\'t match.')
-        elif len(password) < 7:
-            print('Password must be at least 7 characters.')
+        # elif len(password) < 7:
+            # print('Password must be at least 7 characters.')
         else:
             new_user = User(idValue=idValue, firstName=firstName, lastName=lastName, password=generate_password_hash(password, method='sha256'))
             #generate_password_hash(password1, method='sha256')
