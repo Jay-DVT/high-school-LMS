@@ -139,14 +139,15 @@
     \end{split}
     \end{equeation}
 
-    {% elif node=="practice" %}
+    {% elif node=="practice" and finished==False%}
     Resuelve las siguientes ecuaciones:
+    <p>Cuentas con {{score}}/5 | {{score/5*100}}%</p>
     <form action="\math/lineal_equation/practice" method="post">
 
         {% for i in range(len) %}
         <div class="question">
             <p>{{i+1}}) \({{questions[i].question}}\)</p>
-            \({{questions[i].unknown}}\) = <input type="text" name="answer{{i}}" id="answer{{i}}" placeholder="Respuesta">
+            \(x\) = <input type="text" name="answer{{i}}" id="answer{{i}}" placeholder="Respuesta">
         </div>
         {% endfor %}
         <div class="button-container">
@@ -154,6 +155,10 @@
             <input type="reset">
           </div>
     </form>
+
+    {% elif node=="practice" and finished==True%}
+    <h2>Resultados</h2>
+    <p>Obtuviste {{score}}/5 respuestas correctas | {{score/5*100}}%</p>
     {% endif %}
 
 {% endblock %}

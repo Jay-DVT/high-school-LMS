@@ -9,6 +9,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 # from wtforms.validators import InputRequired, Length, ValidationError
 from werkzeug.security import generate_password_hash, check_password_hash
 import random
+import numpy
 
 db = SQLAlchemy()
 DB_NAME = "students.db"
@@ -39,6 +40,7 @@ class Question(db.Model):
     question = db.Column(db.String(1000))
     answer = db.Column(db.String(1000))
     correct = db.Column(db.Boolean)
+    topic = db.Column(db.String(100))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class User(db.Model, UserMixin):
@@ -140,6 +142,21 @@ def history():
     return render_template("history.html", user=current_user)
 #* ----------------------------------
 
+class Questions:
+    def __init__(self, question, answer):
+            self.question = question
+            self.answer = answer
+
+def validateAnswer(topic, result):
+    questions = Question.query.filter_by(topic=topic, correct=False).all()
+    for i in range(len(questions)):
+        if result[i] == questions[i].answer:
+            questions[i].correct = True
+            print("True")
+        else:
+            questions[i].correct = False
+            print("False")
+    db.session.commit()
 # ----------------- Math -----------------
 # Algebra
 @app.route('/math/scientific_notation/theory', methods=['GET'])
@@ -149,7 +166,33 @@ def scientific_notation_theory():
 @app.route('/math/scientific_notation/practice', methods=['GET', 'POST'])
 @login_required
 def scientific_notation_practice():
-    return render_template("scientific_notation.html", user=current_user, node="practice")
+    topic = "scientific_notation"
+    if request.method == 'POST':
+        result = list(request.form.values())
+        validateAnswer(topic, result)
+    finished = False
+    corrects = 0
+    questions = []
+    ex = Question.query.filter_by(user_id=current_user.id, topic=topic).all()
+    if ex:
+        for i in range(len(ex)):
+            if ex[i].correct == False:
+                questions.append(Questions(ex[i].question, ex[i].answer))
+            else:
+                corrects += 1
+        if corrects == len(ex):
+            finished = True
+    else:    
+        for i in range(5):
+            num = round(random.uniform(2, 10), 2)
+            exp = random.randint(1, 12)
+            question = str(num) + "\\times 10^{" + str(exp) + "}"
+            answer = int(num * 10**exp)
+            new_question = Question(question=question, answer=answer, correct=False, topic=topic, user_id=current_user.id)
+            db.session.add(new_question)
+            db.session.commit()
+            questions.append(Questions(question, answer))
+    return render_template("scientific_notation.html", user=current_user, node="practice", questions=questions, len=len(questions), finished=finished, score=corrects)
 
 #lineal equations
 @app.route('/math/lineal_equation/theory', methods=['GET'])
@@ -157,27 +200,31 @@ def lineal_equation_theory():
     return render_template("lineal_equation.html", user=current_user, node="theory")
 @app.route('/math/lineal_equation/practice', methods=['GET', 'POST'])
 def lineal_equation_practice():
+    topic = "lineal_equation"
     if request.method == 'POST':
         result = list(request.form.values())
-        print(result)
-        for i in range(len(result)):
-            if result[i] == question[i].answer:
-                print("correct")
-    class Questions:
-        def __init__(self, question, answer, unknown):
-                self.question = question
-                self.answer = answer
-                self.unknown = unknown
-
+        validateAnswer(topic, result)
+    finished = False
+    corrects = 0
     questions = []
-    for i in range(5):
-        num = round(random.uniform(2, 10), 2)
-        exp = random.randint(1, 12)
-        question = str(num) + "\\times 10^{" + str(exp) + "}"
-        answer = int(num * 10**exp)
-        unknown = ""
-        questions.append(Questions(question, answer, unknown))
-    return render_template("lineal_equation.html", user=current_user, node="practice", questions=questions, len=len(questions))
+    ex = Question.query.filter_by(user_id=current_user.id, topic=topic).all()
+    if ex:
+        for i in range(len(ex)):
+            if ex[i].correct == False:
+                questions.append(Questions(ex[i].question, ex[i].answer))
+            else:
+                corrects += 1
+        if corrects == len(ex):
+            finished = True
+    else:    
+        for i in range(5):
+            question = random.randint(1,3) + "
+            answer =
+            new_question = Question(question=question, answer=answer, correct=False, topic=topic, user_id=current_user.id)
+            db.session.add(new_question)
+            db.session.commit()
+            questions.append(Questions(question, answer))
+    return render_template("lineal_equation.html", user=current_user, node="practice", questions=questions, len=len(questions), finished=finished, score=corrects)
 # ----------------------------------
 
 # ----------------- Physics -----------------
