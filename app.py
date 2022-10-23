@@ -1,5 +1,6 @@
 from flask import Flask, redirect, url_for, render_template, request, flash
 from flask_sqlalchemy import SQLAlchemy
+from matplotlib.pyplot import get
 from sqlalchemy.sql import func
 # from os import path
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
@@ -7,7 +8,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 # from wtforms import StringField, PasswordField, SubmitField
 # from wtforms.validators import InputRequired, Length, ValidationError
 from werkzeug.security import generate_password_hash, check_password_hash
-
+import random
 
 db = SQLAlchemy()
 DB_NAME = "students.db"
@@ -33,6 +34,13 @@ class Note(db.Model):
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+class Question(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    question = db.Column(db.String(1000))
+    answer = db.Column(db.String(1000))
+    correct = db.Column(db.Boolean)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     idValue = db.Column(db.String(150), unique=True)
@@ -40,6 +48,7 @@ class User(db.Model, UserMixin):
     lastName = db.Column(db.String(150))
     password = db.Column(db.String(150))
     notes = db.relationship('Note')
+    questions = db.relationship('Question')
 
 
 print('db init')
@@ -148,6 +157,12 @@ def lineal_equation_theory():
     return render_template("lineal_equation.html", user=current_user, node="theory")
 @app.route('/math/lineal_equation/practice', methods=['GET', 'POST'])
 def lineal_equation_practice():
+    if request.method == 'POST':
+        result = list(request.form.values())
+        print(result)
+        for i in range(len(result)):
+            if result[i] == question[i].answer:
+                print("correct")
     class Questions:
         def __init__(self, question, answer, unknown):
                 self.question = question
@@ -156,9 +171,11 @@ def lineal_equation_practice():
 
     questions = []
     for i in range(5):
-        question = "a"
-        answer = "b"
-        unknown = "\\(x\\)"
+        num = round(random.uniform(2, 10), 2)
+        exp = random.randint(1, 12)
+        question = str(num) + "\\times 10^{" + str(exp) + "}"
+        answer = int(num * 10**exp)
+        unknown = ""
         questions.append(Questions(question, answer, unknown))
     return render_template("lineal_equation.html", user=current_user, node="practice", questions=questions, len=len(questions))
 # ----------------------------------

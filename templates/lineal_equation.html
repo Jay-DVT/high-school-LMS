@@ -145,10 +145,14 @@
 
         {% for i in range(len) %}
         <div class="question">
-            <p>{{i+1}}) {{questions[i].question}}</p>
-            {{questions[i].unknown}} = <input type="text" name="answer{{i}}" id="answer{{i}}" placeholder="Respuesta">
+            <p>{{i+1}}) \({{questions[i].question}}\)</p>
+            \({{questions[i].unknown}}\) = <input type="text" name="answer{{i}}" id="answer{{i}}" placeholder="Respuesta">
         </div>
         {% endfor %}
+        <div class="button-container">
+            <input type="submit" value="Submit"/>
+            <input type="reset">
+          </div>
     </form>
     {% endif %}
 
