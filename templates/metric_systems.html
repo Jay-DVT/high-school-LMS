@@ -1,6 +1,37 @@
 {% extends "layout.html" %}
 
-{% block title %}Math{% endblock %}
+{% block title %}Unit systems{% endblock %}
 
 {% block body %}
+
+    {% if node=="theory" %}
+    {% elif node=="practice" and finished==False%}
+    Resuelve las siguientes ecuaciones:
+    <p>Cuentas con {{score}}/20 | {{score/20*100}}%</p>
+    <form action="/physics/metric_systems/practice" method="post">
+        {% for i in range(len) %}
+            {% if i==0 %}
+                <h2>Longitud</h2>
+            {% elif i==5 %}
+                <h2>Masa</h2>
+            {% elif i==10 %}
+                <h2>Volumen</h2>
+            {% elif i==15 %}
+                <h2>Tiempo</h2>
+            {% endif %}
+            <div class="question">
+                <p>{{i+1}}. {{questions[i].question}} = ___ {{questions[i].value}}</p>
+                <input type="text" name="answer{{i}}" id="answer{{i}}" placeholder="Respuesta">
+            </div>
+        {% endfor %}
+        <div class="button-container">
+            <input type="submit" value="Submit"/>
+            <input type="reset">
+          </div>
+    </form>
+
+    {% elif node=="practice" and finished==True%}
+    <h2>Resultados</h2>
+    <p>Cuentas con {{score}}/20 | {{score/20*100}}%</p>
+    {% endif %}
 {% endblock %}

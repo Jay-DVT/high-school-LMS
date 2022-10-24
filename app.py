@@ -41,6 +41,7 @@ class Question(db.Model):
     answer = db.Column(db.String(1000))
     correct = db.Column(db.Boolean)
     topic = db.Column(db.String(100))
+    value = db.Column(db.String(100))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class User(db.Model, UserMixin):
@@ -143,9 +144,10 @@ def history():
 #* ----------------------------------
 
 class Questions:
-    def __init__(self, question, answer):
+    def __init__(self, question, answer, value):
             self.question = question
             self.answer = answer
+            self.value = value
 
 def validateAnswer(topic, result, roundness):
     questions = Question.query.filter_by(topic=topic, correct=False).all()
@@ -182,7 +184,7 @@ def scientific_notation_practice():
     if ex:
         for i in range(len(ex)):
             if ex[i].correct == False:
-                questions.append(Questions(ex[i].question, ex[i].answer))
+                questions.append(Questions(ex[i].question, ex[i].answer, None))
             else:
                 corrects += 1
         if corrects == len(ex):
@@ -196,7 +198,7 @@ def scientific_notation_practice():
             new_question = Question(question=question, answer=answer, correct=False, topic=topic, user_id=current_user.id)
             db.session.add(new_question)
             db.session.commit()
-            questions.append(Questions(question, answer))
+            questions.append(Questions(question, answer, None))
     return render_template("scientific_notation.html", user=current_user, node="practice", questions=questions, len=len(questions), finished=finished, score=corrects)
 
 #lineal equations
@@ -217,7 +219,7 @@ def lineal_equation_practice():
     if ex:
         for i in range(len(ex)):
             if ex[i].correct == False:
-                questions.append(Questions(ex[i].question, ex[i].answer))
+                questions.append(Questions(ex[i].question, ex[i].answer, None))
             else:
                 corrects += 1
         if corrects == len(ex):
@@ -252,7 +254,130 @@ def metric_systems_theory():
     return render_template("metric_systems.html", user=current_user, node="theory")
 @app.route('/physics/metric_systems/practice', methods=['GET', 'POST'])
 def metric_systems_practice():
-    return render_template("metric_systems.html", user=current_user, node="practice")
+    topic = "metric_systems"
+    if request.method == 'POST':
+        result = list(request.form.values())
+        roundness = 0.1
+        validateAnswer(topic, result, roundness)
+    finished = False
+    corrects = 0
+    questions = []
+    ex = Question.query.filter_by(user_id=current_user.id, topic=topic).all()
+    if ex:
+        for i in range(len(ex)):
+            if ex[i].correct == False:
+                questions.append(Questions(ex[i].question, ex[i].answer, ex[i].value)) #ex[i].value
+            else:
+                corrects += 1
+        if corrects == len(ex):
+            finished = True
+    else:
+        for i in range(20):
+            if i < 5: #Length
+                case = random.randint(1, 10)
+                num = random.randint(1, 100)
+                if case == 1: #km to m
+                    question = str(num) + " km"
+                    answer = str(num * 1000)
+                    value = "m"
+                elif case == 2: #m to km
+                    question = str(num) + " m"
+                    answer = str(num * 0.001)
+                    value = "km"
+                elif case == 3: #m to cm
+                    question = str(num) + " m"
+                    answer = str(num * 100)
+                    value = "cm"
+                elif case == 4: #cm to m
+                    question = str(num) + " cm"
+                    answer = str(num * 0.01)
+                    value = "m"
+                elif case == 5: #feet to m
+                    question = str(num) + " ft"
+                    answer = str(num / 3.281)
+                    value = "m"
+                elif case == 6: #m to feet
+                    question = str(num) + " m"
+                    answer = str(num * 3.281)
+                    value = "ft"
+                elif case == 7: #inches to cm
+                    question = str(num) + " in"
+                    answer = str(num * 2.54)
+                    value = "cm"
+                elif case == 8: #cm to inches
+                    question = str(num) + " cm"
+                    answer = str(num / 2.54)
+                    value = "in"
+                elif case == 9: #miles to km
+                    question = str(num) + " mi"
+                    answer = str(num * 1.609)
+                    value = "km"
+                else: #km to miles
+                    question = str(num) + " km"
+                    answer = str(num / 1.609)
+                    value = "mi"
+            elif i < 10: #Mass
+                case = random.randint(1, 4)
+                num = random.randint(1, 100)
+                if case == 1: #kg to g
+                    question = str(num) + " kg"
+                    answer = str(num * 1000)
+                    value = "g"
+                elif case == 2: #g to kg
+                    question = str(num) + " g"
+                    answer = str(num * 0.001)
+                    value = "kg"
+                elif case == 3: #lb to kg
+                    question = str(num) + " lb"
+                    answer = str(num / 2.205)
+                    value = "kg"
+                else: #kg to lb
+                    question = str(num) + " kg"
+                    answer = str(num * 2.205)
+                    value = "lb"
+            elif i < 15: #Volume
+                case = random.randint(1, 4)
+                num = random.randint(1, 100)
+                if case == 1: #L to ml
+                    question = str(num) + " L"
+                    answer = str(num * 1000)
+                    value = "mL"
+                elif case == 2: #ml to L
+                    question = str(num) + " ml"
+                    answer = str(num * 0.001)
+                    value = "L"
+                elif case == 3: #gal to L
+                    question = str(num) + " gal"
+                    answer = str(num * 3.785)
+                    value = "L"
+                else: #L to gal
+                    question = str(num) + " L"
+                    answer = str(num / 3.785)
+                    value = "gal"
+            else: #Time
+                case = random.randint(1, 4)
+                num = random.randint(1, 100)
+                if case == 1: #s to ms
+                    question = str(num) + " s"
+                    answer = str(num * 1000)
+                    value = "ms"
+                elif case == 2: #ms to s
+                    question = str(num) + " ms"
+                    answer = str(num * 0.001)
+                    value = "s"
+                elif case == 3: #min to s
+                    question = str(num) + " min"
+                    answer = str(num * 60)
+                    value = "s"
+                else: #s to min
+                    question = str(num) + " s"
+                    answer = str(num / 60)
+                    value = "min"
+            new_question = Question(question=question, answer=answer, correct=False, topic=topic, value=value, user_id=current_user.id)
+            db.session.add(new_question)
+            db.session.commit()
+            questions.append(Questions(question, answer, value))
+    return render_template("metric_systems.html", user=current_user, node="practice", questions=questions, len=len(questions), finished=finished, score=corrects)
 
 # line movement
 @app.route('/physics/line_movement/theory', methods=['GET'])
