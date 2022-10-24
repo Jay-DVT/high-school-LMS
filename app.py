@@ -147,16 +147,21 @@ class Questions:
             self.question = question
             self.answer = answer
 
-def validateAnswer(topic, result):
+def validateAnswer(topic, result, roundness):
     questions = Question.query.filter_by(topic=topic, correct=False).all()
     for i in range(len(questions)):
-        if result[i] == questions[i].answer:
+        print(result[i], questions[i].answer)
+        if result[i] == "":
+            print("False")
+            questions[i].correct = False
+        elif float(result[i]) <= float(questions[i].answer) + roundness or float(result[i]) >= float(questions[i].answer) - roundness:
             questions[i].correct = True
             print("True")
         else:
             questions[i].correct = False
             print("False")
         db.session.commit()
+    
 # ----------------- Math -----------------
 # Algebra
 @app.route('/math/scientific_notation/theory', methods=['GET'])
@@ -169,7 +174,7 @@ def scientific_notation_practice():
     topic = "scientific_notation"
     if request.method == 'POST':
         result = list(request.form.values())
-        validateAnswer(topic, result)
+        validateAnswer(topic, result, 0)
     finished = False
     corrects = 0
     questions = []
@@ -203,7 +208,8 @@ def lineal_equation_practice():
     topic = "lineal_equation"
     if request.method == 'POST':
         result = list(request.form.values())
-        validateAnswer(topic, result)
+        roundness = 0.1
+        validateAnswer(topic, result, roundness)
     finished = False
     corrects = 0
     questions = []
@@ -218,12 +224,20 @@ def lineal_equation_practice():
             finished = True
     else:    
         for i in range(5):
-            x1 = random.randint(-10, 10)
-            x2 = random.randint(-10, 10)
-            const1 = random.randint(-10, 10)
-            const2 = random.randint(-10, 10)
-            question = str(x1) +  "=" + str(x2)
-            answer = 2
+            x_1 = random.randint(-10, 10)
+            x_2 = random.randint(-10, 10)
+            const_1 = random.randint(-10, 30)
+            const_2 = random.randint(-10, 30)
+            case = random.randint(1, 2)
+            if case == 1:
+                question =  str(x_1) + "x + (" + str(const_1) + ") = " + str(x_2) + "x + (" + str(const_2) + ")"
+                answer = round((const_2 - const_1)/(x_1 - x_2), 2)
+            elif case == 2:
+                mult_1 = random.randint(2, 5)
+                mult_2 = random.randint(2, 5)
+                print(mult_1, mult_2)
+                question = str(mult_1) + "(" + str(x_1) + "x) + (" + str(const_1) + ") = " + str(mult_2) + "(" + str(x_2) + "x) + (" + str(const_2) + ")"
+                answer = round((const_2 - const_1)/(x_1*mult_1 - x_2*mult_2), 2)
             new_question = Question(question=question, answer=answer, correct=False, topic=topic, user_id=current_user.id)
             db.session.add(new_question)
             db.session.commit()
