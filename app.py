@@ -156,7 +156,7 @@ def validateAnswer(topic, result):
         else:
             questions[i].correct = False
             print("False")
-    db.session.commit()
+        db.session.commit()
 # ----------------- Math -----------------
 # Algebra
 @app.route('/math/scientific_notation/theory', methods=['GET'])
@@ -185,7 +185,7 @@ def scientific_notation_practice():
     else:    
         for i in range(5):
             num = round(random.uniform(2, 10), 2)
-            exp = random.randint(1, 12)
+            exp = random.randint(3, 12)
             question = str(num) + "\\times 10^{" + str(exp) + "}"
             answer = int(num * 10**exp)
             new_question = Question(question=question, answer=answer, correct=False, topic=topic, user_id=current_user.id)
@@ -218,8 +218,12 @@ def lineal_equation_practice():
             finished = True
     else:    
         for i in range(5):
-            question = random.randint(1,3) + "
-            answer =
+            x1 = random.randint(-10, 10)
+            x2 = random.randint(-10, 10)
+            const1 = random.randint(-10, 10)
+            const2 = random.randint(-10, 10)
+            question = str(x1) +  "=" + str(x2)
+            answer = 2
             new_question = Question(question=question, answer=answer, correct=False, topic=topic, user_id=current_user.id)
             db.session.add(new_question)
             db.session.commit()
