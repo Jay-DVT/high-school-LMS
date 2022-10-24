@@ -6,3 +6,4 @@ TODO
 [] - teoria historia
 [x] - Preguntas historia
 [] - Visualizador de Calificaciones
+[] - Design global.css
