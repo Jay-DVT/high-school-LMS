@@ -226,10 +226,18 @@ def lineal_equation_practice():
             finished = True
     else:    
         for i in range(5):
-            x_1 = random.randint(-10, 10)
-            x_2 = random.randint(-10, 10)
-            const_1 = random.randint(-10, 30)
-            const_2 = random.randint(-10, 30)
+            x_1 = int()
+            x_2 = int()
+            const_1 = int()
+            const_2 = int()
+            while x_1 == 0 or x_1 == 1:
+                x_1 = random.randint(-10, 10)
+            while x_2 == 0 or x_2 == 1:
+                x_2 = random.randint(-10, 10)
+            while const_1 == 0:
+                const_1 = random.randint(-10, 30)
+            while const_2 == 0:
+                const_2 = random.randint(-10, 30)
             case = random.randint(1, 2)
             if case == 1:
                 question =  str(x_1) + "x + (" + str(const_1) + ") = " + str(x_2) + "x + (" + str(const_2) + ")"
@@ -243,7 +251,7 @@ def lineal_equation_practice():
             new_question = Question(question=question, answer=answer, correct=False, topic=topic, user_id=current_user.id)
             db.session.add(new_question)
             db.session.commit()
-            questions.append(Questions(question, answer))
+            questions.append(Questions(question, answer, None))
     return render_template("lineal_equation.html", user=current_user, node="practice", questions=questions, len=len(questions), finished=finished, score=corrects)
 # ----------------------------------
 
