@@ -5,6 +5,33 @@
 {% block body %}
 
     {% if node=="theory" %}
+
+    <h2>Factores unitarios o factores de conversión de unidades.</h2>
+    <p>El <span>método del factor unitario</span> para resolver problemas en química se basa en ciertos puntos:</p>
+
+    <ul>
+        <li>Un factor es un número o fracción que multiplica a otro.</li>
+        <li>Es una relación o división.</li>
+        <li>Se le llama factor unitario debido a que tanto el numerador como el denominador equivalen a lo mismo. Por ejemplo, tenemos que 1 centena contiene 100 unidades.</li>
+    </ul>
+
+    \begin{equation}
+    \frac{1 \text{ centena}}{100 \text{ unidades}}
+    \end{equation}
+
+    <p>Como se puede apreciar, una centena es lo mismo que 100 unidades</p>
+    <ul><li>Para poder eliminar las unidades, debemos saber colocar bien los datos de acuerdo al principio matemático de eliminación. Si está en el numerador la unidad que deseamos eliminar, colocamos en el denominador la equivalencia: Por ejemplo, queremos obtener cuántas unidades hay en 3.4 centenas.</li></ul>
+
+    \begin{equation}
+    3.4\cancel{\text{ centenas}} \frac{100 \text{ unidades}}{1 \cancel{\text{ centena}}}
+    \end{equation}
+
+    <p>Siendo posible esto partiendo de que 3.4 centenas puede ser representado como fracción añadiéndole un 1 al denominador. Cuando ya tenemos establecidos nuestros factores, procedemos a multiplicar todos los numeradores y el resultado dividirlo entre el resultado de la multiplicación de todos los denominadores, o lo que es lo mismo, proceder de la forma en que se multiplican fracciones, es decir, de manera directa.</p>
+    \begin{equation}
+    \frac{3.4\cancel{\text{ centenas}}}{1} \frac{100 \text{ unidades}}{1 \cancel{\text{ centena}}}=340 \text{ unidades}
+    \end{equation}
+
+
     {% elif node=="practice" and finished==False%}
     Resuelve las siguientes ecuaciones:
     <p>Cuentas con {{score}}/20 | {{score/20*100}}%</p>
