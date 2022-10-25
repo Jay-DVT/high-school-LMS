@@ -1,3 +1,4 @@
+from operator import le
 from flask import Flask, redirect, url_for, render_template, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from matplotlib.pyplot import get
@@ -149,7 +150,7 @@ class Questions:
             self.answer = answer
             self.value = value
 
-def validateAnswer(topic, result, roundness):
+def validateAnswerfloat(topic, result, roundness):
     questions = Question.query.filter_by(topic=topic, correct=False).all()
     for i in range(len(questions)):
         print(result[i], questions[i].answer)
@@ -159,6 +160,19 @@ def validateAnswer(topic, result, roundness):
         elif float(result[i]) <= float(questions[i].answer) + roundness or float(result[i]) >= float(questions[i].answer) - roundness:
             questions[i].correct = True
             print("True")
+        else:
+            questions[i].correct = False
+            print("False")
+        db.session.commit()
+
+def validateAnswerRadio(topic, result):
+    questions = Question.query.filter_by(topic=topic, correct=False).all()
+    for i in range(len(questions)):
+        value = questions[i].value.split(",")
+        print(value[int(result[i])], questions[i].answer)
+        if value[int(result[i])] == questions[i].answer:
+            print("True")
+            questions[i].correct = True
         else:
             questions[i].correct = False
             print("False")
@@ -176,7 +190,7 @@ def scientific_notation_practice():
     topic = "scientific_notation"
     if request.method == 'POST':
         result = list(request.form.values())
-        validateAnswer(topic, result, 0)
+        validateAnswerfloat(topic, result, 0)
     finished = False
     corrects = 0
     questions = []
@@ -211,7 +225,7 @@ def lineal_equation_practice():
     if request.method == 'POST':
         result = list(request.form.values())
         roundness = 0.1
-        validateAnswer(topic, result, roundness)
+        validateAnswerfloat(topic, result, roundness)
     finished = False
     corrects = 0
     questions = []
@@ -266,7 +280,7 @@ def metric_systems_practice():
     if request.method == 'POST':
         result = list(request.form.values())
         roundness = 0.1
-        validateAnswer(topic, result, roundness)
+        validateAnswerfloat(topic, result, roundness)
     finished = False
     corrects = 0
     questions = []
@@ -386,32 +400,60 @@ def metric_systems_practice():
             db.session.commit()
             questions.append(Questions(question, answer, value))
     return render_template("metric_systems.html", user=current_user, node="practice", questions=questions, len=len(questions), finished=finished, score=corrects)
-
-# line movement
-@app.route('/physics/line_movement/theory', methods=['GET'])
-def line_movement_theory():
-    return render_template("line_movement.html", user=current_user, node="theory")
-@app.route('/physics/line_movement/practice', methods=['GET', 'POST'])
-def line_movement_practice():
-    return render_template("line_movement.html", user=current_user, node="practice")
-
-# Force
-@app.route('/physics/force/theory', methods=['GET'])
-def force_theory():
-    return render_template("force.html", user=current_user, node="theory")
-@app.route('/physics/force/practice', methods=['GET', 'POST'])
-def force_practice():
-    return render_template("force.html", user=current_user, node="practice")
 # ----------------------------------
 
 # ----------------- History -----------------
 # Nation state
-@app.route('/history/nation_state/theory', methods=['GET'])
-def nation_state_theory():
-    return render_template("nation_state.html", user=current_user, node="theory")
-@app.route('/history/nation_state/practice', methods=['GET', 'POST'])
-def nation_state_practice():
-    return render_template("nation_state.html", user=current_user, node="practice")
+@app.route('/history/conquista/theory', methods=['GET'])
+def conquista_theory():
+    return render_template("conquista.html", user=current_user, node="theory")
+@app.route('/history/conquista/practice', methods=['GET', 'POST'])
+def conquista_practice():
+    topic = "conquista"
+    if request.method == 'POST':
+        result = list(request.form.values())
+        print(result)
+        validateAnswerRadio(topic, result)
+    finished = False
+    corrects = 0
+    questions = []
+    ex = Question.query.filter_by(user_id=current_user.id, topic=topic).all()
+    if ex:
+        length = 0
+        for i in range(len(ex)):
+            if ex[i].correct == False:
+                print(ex[i].question)
+                value = ex[i].value.split(",")
+                questions.append(Questions(ex[i].question, ex[i].answer, value)) #ex[i].value
+                length += 1
+            else:
+                corrects += 1
+        if corrects == len(ex):
+            finished = True
+    else:
+        questionls = [
+            {"question": "¿Cuántas órdenes de frailes llegaron a la Nueva España a evangelizar?", "answer": "3", "value": ["3", "7", "5", "2"]},
+            {"question": "¿Cuál fue la primera orden de frailes que llegó a la Nueva España?", "answer": "Franciscanos", "value": ["Franciscanos", "Dominicos", "Agustinos", "Mercedarios"]},
+            {"question": "¿Cuál fue la tercera orden de frailes que llegó a la Nueva España?", "answer": "Agustinos", "value": ["Franciscanos", "Dominicos", "Agustinos", "Mercedarios"]},
+            {"question": "¿Quién fue el primer virrey de la Nueva España?", "answer": "Antonio de Mendoza", "value": ["Leopoldo I", "Maximiliano II", "Antonio de Mendoza", "Josefa I"]},
+            {"question": "¿Cuándo llegó?", "answer": "1535", "value": ["1535", "1577", "1525", "1582"]},
+            {"question": "¿Quién nombraba al Virrey?", "answer": "El monarca español", "value": ["El monarca español", "Consejo local", "El vato ese", "El mismo virrey"]},
+            {"question": "¿Quién o quiénes eran la máxima autoridad en la Nueva España?", "answer": "El consejo de indias", "value": ["El consejo de espana", "El virrey", "El pueblo", "El consejo de indias"]},
+            {"question": "¿Qué hacían los encomenderos?", "answer": "Controlar a los pueblos indígenas", "value": ["Controlar a los pueblos indígenas", "Apoya a los pueblos indígenas", "sepa", "llamrle al virrey"]},
+            {"question": "¿Cuántos virreyes hubieron durante el virreinato?", "answer": "63", "value": ["63", "7", "13", "3"]},
+            {"question": "¿En qué se basaba la organización social de la Nueva España?", "answer": "origen de los individuos", "value": ["religion", "procedencia de la casa", "origen de los individuos", "origen del ganado"]},]
+        length = len(questionls)
+        print(length)  
+        for i in range(length):
+            question = questionls[i]["question"]
+            answer = questionls[i]["answer"]
+            value = questionls[i]["value"]
+            saveValue = ",".join(value)
+            new_question = Question(question=question, answer=answer, correct=False, topic=topic, value=saveValue, user_id=current_user.id)
+            db.session.add(new_question)
+            db.session.commit()
+            questions.append(Questions(question, answer, value))
+    return render_template("conquista.html", user=current_user, node="practice", questions=questions, len=length, finished=finished, score=corrects)
 # ----------------------------------
 
 if __name__ == '__main__':

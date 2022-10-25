@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}Conquista{% endblock %}
+
+{% block body %}
+
+    {% if node=="theory" %}
+    
+
+    {% elif node=="practice" and finished==False%}
+    Resuelve las siguientes preguntas:
+    <form action="\history/conquista/practice" method="post">
+
+        {% for i in range(len) %}
+        <div class="question">
+            <p>{{i+1}} {{questions[i].question}}</p>
+            <fieldset id="answer{{i}}">
+                {% for j in range(4) %}
+                <input type="radio" name="answer{{i}}" id="answer{{i}}_{{j}}" value="{{j}}" required>
+                <label for="answer{{i}}_{{j}}">{{questions[i].value[j]}}</label>
+                {% endfor %}
+            </fieldset>
+        </div>
+        {% endfor %}
+        <div class="button-container">
+            <input type="submit" value="Submit"/>
+            <input type="reset">
+          </div>
+    </form>
+
+    {% elif node=="practice" and finished==True%}
+    <h2>Resultados</h2>
+    <p>Obtuviste {{score}}/10 respuestas correctas | {{score/10*100}}%</p>
+    {% endif %}
+
+{% endblock %}
