@@ -2,6 +2,10 @@
 
 {% block title %}Scientific Notation{% endblock %}
 
+{% block nav %}
+    <li>> <a href="{{url_for('math')}}">Matematicas</a></li>
+{% endblock %}
+
 {% block body %}
 
     {% if node=="theory" %}

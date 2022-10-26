@@ -15,9 +15,12 @@
         <ul id="nav">
             <div class="links">
                 <li><a href="{{url_for('index')}}">Inicio</a></li>
-                <li><a href="{{url_for('scores')}}">Calificaciones</a></li>
+                {% block nav %}{% endblock %}
             </div>
-            <li id="logout">{{ user.firstName }} {{ user.lastName }}. <a id="logout" href="/logout">Log out</a></li>
+            <div class="links">
+                <li><a href="{{url_for('scores')}}">Calificaciones</a></li>
+                <li id="logout">{{ user.firstName }} {{ user.lastName }}. <a id="logout" href="/logout">Log out</a></li>
+            </div>
         </ul>
     </nav>
     {% endif %}
