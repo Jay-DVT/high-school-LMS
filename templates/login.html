@@ -3,32 +3,35 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
-
-<form action="/login" method="post">
+<div class="auth-bg">
+<div class="auth">
+  <form action="/login" method="post">
     <h3>Log in</h3>
-    <div class="form">
-        <label for="idValue">Id</label>
-        <input
-          type="text"
-          autocomplete="off"
-          placeholder="Id"
-          name="idValue"
-          id="idValue"
+  <div class="form">
+      <label for="idValue">Id</label>
+      <input
+      type="text"
+      autocomplete="off"
+      placeholder="Id"
+        name="idValue"
+        id="idValue"
         />
         <label for="password">Password</label>
         <input
-          type="password"
-          autocomplete="off"
-          placeholder="Password"
-          name="password"
-          id="password"
-        />
-        <div class="button-container">
-          <input type="submit" value="Log in"/>
-          <input type="reset">
-        </div>
+        type="password"
+        autocomplete="off"
+        placeholder="Password"
+        name="password"
+        id="password"
+      />
+      <div class="button-container">
+        <input type="submit" value="Log in"/>
+        <input type="reset">
+      </div>
     </div>
   </form>
-    Don't have an account. <a id="signup" href="{{url_for('signup')}}">Sign up</a>.
+  Don't have an account. <a id="signup" href="{{url_for('signup')}}">Sign up</a>
+</div>
+</div>
 
 {% endblock %}

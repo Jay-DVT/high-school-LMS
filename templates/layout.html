@@ -27,6 +27,8 @@
     <script 
         type="text/javascript"
         src="{{url_for('static', filename='app.js')}}"></script>
-    {% block body %}{% endblock %}
+    <div id="body">
+        {% block body %}{% endblock %}
+    </div>
 </body>
 </html>

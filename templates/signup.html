@@ -3,7 +3,8 @@
 {% block title %}Sign Up{% endblock %}
 
 {% block body %}
-
+<div class="auth-bg">
+<div class="auth">
 <form action="/signup" method="post">
   <h3>Sign Up</h3>
   <div class="form">
@@ -53,4 +54,8 @@
     </div>
   </div>
 </form>
-Already have an account. <a id="login" href="{{url_for('login')}}">Log in</a>. {% endblock %}
+Already have an account. <a id="login" href="{{url_for('login')}}">Log in</a>.
+</div>
+</div>
+{% endblock %}
+

@@ -9,6 +9,11 @@ form h3 {
     text-align: center;
 }
 
+body {
+    margin: 0;
+    height: 100%;
+}
+
 #nav {
     list-style: none;
     padding: 8px;
@@ -22,4 +27,74 @@ form h3 {
     flex-direction: column;
     align-items: flex-start;
     padding: 8px;
+    gap: 4px;
+}
+
+.links {
+    display: flex;
+    flex-direction: row;
+    padding: 8px;
+    gap: 15px
+}
+
+nav {
+    overflow: hidden;
+    background-color: #333;
+    top: 0; /* Position the navbar at the top of the page */
+    width: 100%; /* Full width */
+    color: white;
+}
+
+a:link {
+    text-decoration: none;
+  }
+  
+a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+li a {
+    color: white;
+    padding: 0px;
+    margin: 0px;
+}
+
+.links {
+    height: 100%;
+
+}
+
+.auth {
+    text-align: left;   
+    background-color: #f1f1f1;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;     
+}
+
+.auth-bg {
+    display: flex;
+    justify-content: center;
+}
+
+
+a {
+    color: blue;
+    padding: 0px 16px;
+}
+
+#body {
+    margin: 20px
+}
+
+.discipline {
+    padding: 4px 0px;
+}
+
+.button-container {
+    margin: 12px;
 }
