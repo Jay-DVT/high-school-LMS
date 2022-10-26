@@ -20,32 +20,6 @@
         {% endfor %}
     </div>
     <canvas id="lineChart" width="900" height="400"></canvas>
-    <!-- <script>
-        const labels = [
-          'January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-        ];
-      
-        const data = {
-          labels: labels,
-          datasets: [{
-            label: 'My First dataset',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [0, 10, 5, 2, 20, 30, 45],
-          }]
-        };
-      
-        const config = {
-          type: 'bar',
-          data: {}
-          options: {}
-        };
-      </script> -->
       <script>
         var ctx = document.getElementById('lineChart').getContext('2d');
         const myChart = new Chart(ctx, {
