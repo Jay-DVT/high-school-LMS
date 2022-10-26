@@ -1,6 +1,7 @@
 from operator import le
 from flask import Flask, redirect, url_for, render_template, request, flash
 from flask_sqlalchemy import SQLAlchemy
+from matplotlib.markers import MarkerStyle
 from matplotlib.pyplot import get
 from sqlalchemy.sql import func
 # from os import path
@@ -41,8 +42,9 @@ class Question(db.Model):
     question = db.Column(db.String(1000))
     answer = db.Column(db.String(1000))
     correct = db.Column(db.Boolean)
-    topic = db.Column(db.String(100))
     value = db.Column(db.String(100))
+    topic = db.Column(db.String(100))
+    discipline = db.Column(db.String(100))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class User(db.Model, UserMixin):
@@ -151,22 +153,23 @@ class Questions:
             self.value = value
 
 def validateAnswerfloat(topic, result, roundness):
-    questions = Question.query.filter_by(topic=topic, correct=False).all()
+    questions = Question.query.filter_by(user_id=current_user.id, topic=topic, correct=False).all()
     for i in range(len(questions)):
-        print(result[i], questions[i].answer)
+        print("expected", questions[i].answer)
+        print("answer",result[i])
         if result[i] == "":
             print("False")
             questions[i].correct = False
-        elif float(result[i]) <= float(questions[i].answer) + roundness or float(result[i]) >= float(questions[i].answer) - roundness:
-            questions[i].correct = True
+        elif float(result[i]) >= float(questions[i].answer) - roundness and float(result[i]) <= float(questions[i].answer) + roundness:
             print("True")
+            questions[i].correct = True
         else:
             questions[i].correct = False
             print("False")
         db.session.commit()
 
 def validateAnswerRadio(topic, result):
-    questions = Question.query.filter_by(topic=topic, correct=False).all()
+    questions = Question.query.filter_by(user_id=current_user.id, topic=topic, correct=False).all()
     for i in range(len(questions)):
         value = questions[i].value.split(",")
         print(value[int(result[i])], questions[i].answer)
@@ -209,7 +212,7 @@ def scientific_notation_practice():
             exp = random.randint(3, 12)
             question = str(num) + "\\times 10^{" + str(exp) + "}"
             answer = int(num * 10**exp)
-            new_question = Question(question=question, answer=answer, correct=False, topic=topic, user_id=current_user.id)
+            new_question = Question(question=question, answer=answer, correct=False, topic=topic, discipline="math", user_id=current_user.id)
             db.session.add(new_question)
             db.session.commit()
             questions.append(Questions(question, answer, None))
@@ -217,9 +220,11 @@ def scientific_notation_practice():
 
 #lineal equations
 @app.route('/math/lineal_equation/theory', methods=['GET'])
+@login_required
 def lineal_equation_theory():
     return render_template("lineal_equation.html", user=current_user, node="theory")
 @app.route('/math/lineal_equation/practice', methods=['GET', 'POST'])
+@login_required
 def lineal_equation_practice():
     topic = "lineal_equation"
     if request.method == 'POST':
@@ -262,7 +267,7 @@ def lineal_equation_practice():
                 print(mult_1, mult_2)
                 question = str(mult_1) + "(" + str(x_1) + "x) + (" + str(const_1) + ") = " + str(mult_2) + "(" + str(x_2) + "x) + (" + str(const_2) + ")"
                 answer = round((const_2 - const_1)/(x_1*mult_1 - x_2*mult_2), 2)
-            new_question = Question(question=question, answer=answer, correct=False, topic=topic, user_id=current_user.id)
+            new_question = Question(question=question, answer=answer, correct=False, topic=topic, discipline="math", user_id=current_user.id)
             db.session.add(new_question)
             db.session.commit()
             questions.append(Questions(question, answer, None))
@@ -272,9 +277,11 @@ def lineal_equation_practice():
 # ----------------- Physics -----------------
 # Metric systems
 @app.route('/physics/metric_systems/theory', methods=['GET'])
+@login_required
 def metric_systems_theory():
     return render_template("metric_systems.html", user=current_user, node="theory")
 @app.route('/physics/metric_systems/practice', methods=['GET', 'POST'])
+@login_required
 def metric_systems_practice():
     topic = "metric_systems"
     if request.method == 'POST':
@@ -395,7 +402,7 @@ def metric_systems_practice():
                     question = str(num) + " s"
                     answer = str(num / 60)
                     value = "min"
-            new_question = Question(question=question, answer=answer, correct=False, topic=topic, value=value, user_id=current_user.id)
+            new_question = Question(question=question, answer=answer, correct=False, topic=topic, value=value, discipline="physics", user_id=current_user.id)
             db.session.add(new_question)
             db.session.commit()
             questions.append(Questions(question, answer, value))
@@ -403,11 +410,13 @@ def metric_systems_practice():
 # ----------------------------------
 
 # ----------------- History -----------------
-# Nation state
+# Conquista
 @app.route('/history/conquista/theory', methods=['GET'])
+@login_required
 def conquista_theory():
     return render_template("conquista.html", user=current_user, node="theory")
 @app.route('/history/conquista/practice', methods=['GET', 'POST'])
+@login_required
 def conquista_practice():
     topic = "conquista"
     if request.method == 'POST':
@@ -449,12 +458,59 @@ def conquista_practice():
             answer = questionls[i]["answer"]
             value = questionls[i]["value"]
             saveValue = ",".join(value)
-            new_question = Question(question=question, answer=answer, correct=False, topic=topic, value=saveValue, user_id=current_user.id)
+            new_question = Question(question=question, answer=answer, correct=False, topic=topic, value=saveValue, discipline="history", user_id=current_user.id)
             db.session.add(new_question)
             db.session.commit()
             questions.append(Questions(question, answer, value))
     return render_template("conquista.html", user=current_user, node="practice", questions=questions, len=length, finished=finished, score=corrects)
 # ----------------------------------
+
+class Mark:
+    def __init__(self, discipline, marks, score):
+        self.discipline = discipline
+        self.marks = marks
+        self.score = score
+
+@app.route('/scores', methods=['GET'])
+@login_required
+def scores():
+    questions = Question.query.filter_by(user_id=current_user.id).all()
+    disciplines = []
+    topics = {}
+    scores = []
+    data = []
+    for i in range(len(questions)):
+        if questions[i].discipline not in disciplines:
+            disciplines.append(questions[i].discipline)
+            topics[questions[i].discipline] = []
+        if questions[i].topic not in topics[questions[i].discipline]:
+            topics[questions[i].discipline].append(questions[i].topic)
+    for i in range(len(disciplines)):
+        getScores = Question.query.filter_by(user_id=current_user.id, discipline=disciplines[i]).all()
+        score = 0
+        hits = {}
+        for j in range(len(getScores)):
+            if getScores[j].correct == True:
+                score += 1
+                if getScores[j].topic not in hits:
+                    hits[getScores[j].topic] = 0
+                hits[getScores[j].topic] += 1
+        score = score/len(getScores)*100
+        if score * 10 % 10 == 0:
+            score = int(score)
+        for j in hits:
+            hits[j] = 100 * hits[j] / Question.query.filter_by(user_id=current_user.id, topic=j).count()
+            if hits[j] * 10 % 10 == 0:
+                hits[j] = int(hits[j])
+        new_mark = Mark(disciplines[i], hits, score)
+        scores.append(new_mark)
+        for hit in hits:
+            data.append((hit, hits[hit]))      
+    print(data)
+    labels = [row[0].replace('_', ' ').capitalize() for row in data]
+    print(labels)
+    values = [row[1] for row in data]
+    return render_template("scores.html", user=current_user, len=len(scores), scores=scores, labels=labels, values=values)
 
 if __name__ == '__main__':
     #debug mode, turn off in deployment

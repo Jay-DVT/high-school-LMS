@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block title %}Scores{% endblock %}
+
+{% block body %}
+
+    <h2>Calificaciones totales</h2>
+    <div class="flex-center">
+        {% for i in range(len) %}
+        <div>
+            <h3>{{ scores[i].discipline.capitalize() }}: {{ scores[i].score }}%</h3>
+            {% if scores[i].score < 70 %}
+            <p>You still have time, go ahead</p>
+            {% endif %}
+            Temas: 
+            {% for j in scores[i].marks %}
+            <p>{{ j.replace('_', ' ').capitalize() }}: {{ scores[i].marks[j] }}%</p>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+    <canvas id="lineChart" width="900" height="400"></canvas>
+    <!-- <script>
+        const labels = [
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+        ];
+      
+        const data = {
+          labels: labels,
+          datasets: [{
+            label: 'My First dataset',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [0, 10, 5, 2, 20, 30, 45],
+          }]
+        };
+      
+        const config = {
+          type: 'bar',
+          data: {}
+          options: {}
+        };
+      </script> -->
+      <script>
+        var ctx = document.getElementById('lineChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: {{ labels | safe }},
+                datasets: [
+                    {
+                        label: "Calificaciones",
+                        data: {{ values | safe }},
+                        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                    }
+                ]
+            },
+            options: {
+                responsive: false
+            }
+        });
+      </script>
+
+{% endblock %}
